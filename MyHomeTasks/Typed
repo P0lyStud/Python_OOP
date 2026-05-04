@@ -1,0 +1,25 @@
+class Typed:
+    def __init__(self, name, excpected_type):
+        self.name = name
+        self.excpected_type = excpected_type
+        pass
+
+    def type_validate(self, value):
+        if not isinstance(value, self.excpected_type):
+            raise TypeError("Неравильный тип")
+        
+    def __set__(self, obj, value):
+        self.type_validate(value)
+        print("OK")
+        
+class Person:
+    name = Typed("name", str)
+    age = Typed("age", int)
+
+try:
+    p = Person()
+    p.name = "Alice"   # OK
+    p.age = 30         # OK
+    # p.age = "тридцать" # TypeError
+except Exception as e:
+    print(e)

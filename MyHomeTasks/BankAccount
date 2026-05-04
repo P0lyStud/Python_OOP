@@ -1,0 +1,41 @@
+class BankAccount:
+    def __init__(self, balance = 0):
+        self.__balance = balance
+
+    @staticmethod
+    def amount_validate(amount):
+        if amount <= 0:
+            raise ValueError("не возможно")
+        if not isinstance(amount, (int, float)):
+            raise TypeError("Фигня")
+
+    def deposite(self, amount):
+        self.amount_validate(amount)
+        self.__balance += amount
+        print("готово")
+        pass
+
+    def withdraw(self, amount):
+        self.amount_validate(amount)
+        if amount > self.__balance:
+            raise ValueError("Не хватает")
+        
+        self.__balance -= amount
+        print("уменьшил")
+
+    @property
+    def balance(self):
+        return self.__balance
+    
+    @balance.setter
+    def balance(self, amount):
+        raise AttributeError("Нельзя!")
+    
+try:
+    acc = BankAccount()
+    acc.deposit(1000)
+    acc.withdraw(300)
+    print(acc.balance)   # 700
+    acc.balance = 0      # AttributeError
+except Exception as e:
+    print(e)

@@ -1,0 +1,30 @@
+"""Класс-синглтон"""
+class Database:
+    instance = None # объект внутри (он один)
+    call_count = 0 # счетчик (считает количество вызовов объекта)
+
+    """магический метод для создания объекта класса"""
+    def __new__(cls): 
+        if cls.instance is None: # Если объект еще не создан
+            print("Создано соединение")
+            cls.instance = super().__new__(cls)
+            cls.call_count += 1
+            return cls.instance
+        print("Используем существующее") # Если уже создан
+        cls.call_count += 1
+        return cls.instance
+
+    # def __init__(self):
+    #     self.connected = True 
+    #     pass
+
+
+
+db1 = Database()   # Создано соединение
+db2 = Database()   # Используем существующее
+print(db1 is db2)  # True
+print(Database.call_count)  # 2
+sdds = Database()
+db2sdf = Database()
+db55 = Database()
+print(Database.call_count)

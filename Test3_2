@@ -1,0 +1,65 @@
+"""класс-декоратор, проверяет деление на ноль"""
+# class validate_division:
+#     def __init__(self, func):
+#         self.func = func
+#         self.name = func.__name__
+
+#     """магчиеский метод, """
+#     def __get__(self, obj):
+#         value = self.func(obj)
+#         obj.__dict__[self.name] = value
+#         return value
+        # @validate_division
+
+"""класс-декоратор, выполняет функции, на которые наложен"""
+class Calculator:
+    def __init__(self):
+        self.__result = 0 # приватный атрибут, хранит результат
+
+    """свойтсво-геттер, возвращает значение результата"""
+    @property
+    def result(self):
+        return self.__result
+    
+    """свойтсво-сеттер, устанавливает значение приватного атрибута (результата)"""
+    @result.setter
+    def result(self, value):
+        self.__result = value
+    
+    """метод суммирования"""
+    def add(self, a, b):
+        self.__result = a + b
+        # return sum(args)
+
+    """метод разности"""
+    def sub(self, a, b):
+        self.__result = a - b      
+
+    """метод умножения"""
+    def mul(self, a, b):
+        self.__result = a * b
+
+    """метод деления с наложенным декоратором, проверяющим деление на ноль"""
+    def div(self, a, b):
+        if b == 0:
+            raise ZeroDivisionError("You can't divite to zero!")        
+        self.__result = a / b
+ 
+    """магический метод, позволяет вызывать класс как функцию"""
+    def __call__(self, *args):
+        return self.__result
+    
+    def __repr__(self):
+        return f"Calculator(result={self.__result})"
+
+calc = Calculator()
+print(calc())
+calc.add(1, 5)
+print(calc())
+calc.sub(1, 5)
+print(calc())
+calc.mul(1, 5)
+print(calc())
+# calc.div(1, 0)
+# print(calc())
+print(repr(calc))

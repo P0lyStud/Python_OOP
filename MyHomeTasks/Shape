@@ -1,0 +1,59 @@
+import math # библиотека для математических операторов
+
+"""класс-основа"""
+class Shape:
+    def __init__(self, color):
+        self._color = self.color_validate(color)
+
+    """метод выводит цвет фигуры"""
+    def get_color(self):
+        return self._color
+
+    """метод устанавливает цвет фигуры"""
+    def set_color(self, color):
+        self.color_validate(color)
+        self._color = color
+
+    @staticmethod
+    def color_validate(color):
+        if not isinstance(color, str):
+            raise TypeError("цвет должен быть строкой")
+        return color
+
+
+"""класс кургов(наследуется от класса фигур)"""
+class Circle(Shape):
+    def __init__(self, color, radius):
+        super().__init__(color)
+        self.__radius = self.radius_validate(radius)
+
+    @staticmethod
+    def radius_validate(value):
+        if not isinstance(value, (int, float)):
+            raise TypeError("радиус должен быть числом")
+        if value < 0:
+            return -value
+        return value
+    
+    """магический метод выводит информацию для пользователя"""
+    def __str__(self):
+        return f"Цвет: {self._color}, радиус = {self.__radius}"
+    
+    """свойство выводит площадь круга"""
+    @property
+    def area(self):
+        return math.pi * math.pow(self.__radius, 2)
+
+    """защищенный метод выводит фразу"""
+    def _protected_method(self):
+        print("Вы вызвали защищенный метод, но лучше так не делать!")
+
+
+try:
+    c = Circle("red", 5)
+    print(c.get_color())   # red
+    print(c.area)          # 78.5398...
+    c._protected_method()  # сработает, но IDE предупредит
+    print(c.__radius)    # AttributeError
+except Exception as e:
+    print(e)

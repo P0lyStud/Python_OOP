@@ -1,0 +1,37 @@
+import time # библиотека time для считывания настоящего времени
+
+"""класс-таймер для измерения времени"""
+class Timer:
+    def __init__(self):
+        self.elapsed = 0 # атрибут, хранящий время раблоты класса
+        self.start_time = 0 # атрибут, хранящий время начала работы класса
+        self.final_time = 0 # атрибут, хранящий время конца работы класса
+
+    """классовый метод, выводит сообщение"""
+    @classmethod
+    def class_timer(cls):
+        print("This is timer with default message")
+    
+    """магический метод, устанавливает время начала работы класса"""
+    def __enter__(self):
+        self.start_time = time.perf_counter() # устанавливает занчение атрибута
+        print(self.start_time) # выводит значение атрибута
+        return self.start_time
+        
+    """магический метод, устанавливает время конца работы класса"""   
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.final_time = time.perf_counter() # устанавливает занчение атрибута
+        print(self.final_time) # выводит значение атрибута
+        return self.time_range
+
+    """свойство, подсчитывает промежуток времени между началом и концом работы класса"""
+    @property
+    def time_range(self):
+        self.elapsed = self.final_time - self.start_time # утсанавилвает значение атрибута
+        print(self.elapsed) # выводит значение атрибута
+        return self.elapsed
+
+
+
+with Timer() as t:
+    pass

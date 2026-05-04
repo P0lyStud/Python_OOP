@@ -1,0 +1,49 @@
+"""класс хранящий кэш"""
+class CachedFunction:
+    cache = {} # атрибут класса - словарь кэша
+
+    """магический метод для создания объектов класса"""
+    def __new__(cls, name):
+        if name not in cls.cache:
+            instance = super().__new__(cls)
+            cls.cache[name] = instance
+            return cls.cache[name] if cls.cache else None
+        return cls.cache[name]
+        pass
+
+    """магический метод для создания экземпляра класса"""
+    def __init__(self, func):
+        self.func = func
+        self.cache = {} # словарь с кэшем
+
+    """магический метод для вызова класса как функции"""
+    def __call__(self, *args, **kwargs):
+        if args not in self.cache:
+            result = self.func(*args, **kwargs)
+            self.cache[args] = result
+            return self.cache[args] if self.cache else None
+        return self.cache[args]
+        pass
+
+
+"""вызов функции"""
+@CachedFunction
+def slow_square(x):
+    import time
+    time.sleep(1)
+    return x * x
+
+print(slow_square(4))   # вычисляем -> 16 (задержка)
+print(slow_square(4))   # из кэша -> 16 (мгновенно)
+
+
+"""создание объекта"""
+@CachedFunction
+def slow_instance(x):
+    import time
+    time.sleep(1)
+    mc1 = CachedFunction(x)
+    return mc1
+
+print(slow_instance("my class"))
+print(slow_instance("my class"))

@@ -1,0 +1,24 @@
+class TempGlobal:
+    def __init__(self, name, value = globals()):
+        self.value = value
+        self.name = name
+        self._old_value = None
+        pass
+
+    def __enter__(self):
+        self._old_value = self.value #globals().get(self.name)
+        setattr(self, self.name, self.value)
+        return self.value
+        pass
+    
+    def __exit__(self, exc_type, exc, tb):
+        self.value = self._old_value
+        return "Конец работы"
+        pass
+    
+    
+
+x = 10
+with TempGlobal("x", 100):
+    print(x)   # 100
+print(x)       # 10

@@ -1,0 +1,16 @@
+"""класс-декортатор"""
+class AddAttr:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    """магический метод для вызова класса как декоратора"""
+    def __call__(self, cls):
+        setattr(cls, self.name, self.value) # создаёт экземпляр класса (cls.(self.name) = self.value)
+        return cls
+
+@AddAttr("version", 1.0)
+class MyClass:
+    pass
+
+print(MyClass.version)   # 1.0

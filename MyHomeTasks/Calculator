@@ -1,0 +1,57 @@
+class Calculator:
+    def __init__(self):
+        self._history = []
+
+    @staticmethod
+    def data_validate(data):
+        if not isinstance(data, (int, float)):
+            raise TypeError("numbers must be int")
+        
+    @staticmethod
+    def operation_validate(operation):
+        operators = ["+", "-", "*", "/"]
+        if operation not in operators:
+            raise KeyError(f"Calculator do not maintenace operation <<{operation}>>")
+
+    def __call__(self, a, operation, b):
+        self.data_validate(a)
+        self.data_validate(b)
+        self.operation_validate(operation)
+
+        if operation == "+":
+            self._history.append(f"{a} + {b} = {a + b}")
+            return a + b
+        if operation == "-":
+            self._history.append(f"{a} - {b} = {a - b}")
+            return a - b
+        if operation == "*":
+            self._history.append(f"{a} * {b} = {a * b}")
+            return a * b
+        if operation == "/":
+            if b != 0:
+                self._history.append(f"{a} / {b} = {(a / b):.2f}")
+                return f"{(a / b):.2f}"
+            raise ValueError("Devider must not be 0")
+
+    def show_history(self):
+        print(self._history)
+
+    def __len__(self):
+        return len(self._history)
+
+try:
+    calc = Calculator()
+    print(calc(5, '+', 3))  # 8
+    print(calc(10, '-', 7)) # 3
+    print(calc(10, '*', 7)) # 70
+    print(calc(10, '/', 9)) # 1.11(1)
+    
+    # print(calc(1, "минус" , 1))
+    # print(calc("пять", "+", "5"))
+
+except Exception as e:
+    print(f'ERROR: {e}')
+
+finally:
+    calc.show_history()     # ['5 + 3 = 8', '10 * 2 = 20']
+    print(len(calc))

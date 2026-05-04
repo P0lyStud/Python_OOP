@@ -1,0 +1,16 @@
+class Logger:
+    def __init__(self, func):
+        self.func = func
+        pass
+
+    def __call__(self, *args):
+        print(f"Вызов функции {self.func.__name__} с аргументами {args}")
+        return self.func(*args)
+        pass
+
+
+@Logger
+def add(a, b):
+    return a + b
+
+print(add(3, 5))   # Вызов функции add с аргументами (3, 5) -> 8

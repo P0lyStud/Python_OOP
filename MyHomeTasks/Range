@@ -1,0 +1,30 @@
+"""класс записывает значение в определенном диапазоне"""
+class Range:
+    def __init__(self, name, min_val, max_val):
+        self.name = name
+        self.min_val = min_val
+        self.max_val = max_val
+        pass
+
+    """проверка значения температуры"""
+    def temp_validate(self, value):
+        if not isinstance(value, (int, float)):
+            raise TypeError("Темепратура должна быть числом")
+        if not self.min_val <= value <= self.max_val:
+            raise ValueError("Температура не входит в диапазон")
+        return value
+
+    """магический метод устанавливает значение тмепратуры для объекта"""
+    def __set__(self, obj, value):
+        obj.__dict__[self.name] = self.temp_validate(value)
+        print("OK")
+
+class Temperature():
+    celsius = Range("celsius", -273.15, 1000)
+
+try:
+    t = Temperature()
+    t.celsius = 25        # OK
+    t.celsius = -300      # ValueError
+except Exception as e:
+    print(e)
